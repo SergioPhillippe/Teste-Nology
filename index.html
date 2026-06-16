@@ -2,55 +2,237 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Cashback - Nology</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
-        .container { max-width: 500px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select, button { width: 100%; padding: 8px; box-shadow: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { background-color: #007bff; color: white; cursor: pointer; font-size: 16px; border: none; }
-        button:hover { background-color: #0056b3; }
-        .resultado { margin-top: 20px; padding: 10px; background: #e2f0d9; border-left: 5px solid #385723; }
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #bbf7d0;
+            --success-text: #166534;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--background); 
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 480px; 
+            background: var(--surface); 
+            padding: 32px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); 
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-size: 14px;
+            font-weight: 600; 
+            color: var(--text-main);
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px 14px; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 15px;
+            background-color: #fff;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        button { 
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary); 
+            color: white; 
+            font-size: 16px; 
+            font-weight: 600;
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }
+
+        button:hover { 
+            background-color: var(--primary-hover); 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .resultado { 
+            margin-top: 24px; 
+            padding: 16px; 
+            background: var(--success-bg); 
+            border: 1px solid var(--success-border);
+            border-radius: 8px;
+            color: var(--success-text);
+            font-size: 16px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .resultado strong {
+            font-size: 20px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 14px;
+            background: #fff;
+        }
+
+        th, td { 
+            padding: 12px 14px; 
+            text-align: left; 
+        }
+
+        th { 
+            background-color: #f8fafc; 
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-vip { background: #fef3c7; color: #d97706; }
+        .badge-normal { background: #f1f5f9; color: #475569; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Simulador de Cashback</h2>
+    <p class="subtitle">Programa de Fidelidade Fintech</p>
+    
     <div class="form-group">
-        <label>Valor do Produto (R$):</label>
-        <input type="number" id="valor" value="600">
+        <label for="valor">Valor do Produto (R$)</label>
+        <input type="number" id="valor" value="600" min="0" step="0.01">
     </div>
+    
     <div class="form-group">
-        <label>Desconto (%):</label>
-        <input type="number" id="desconto" value="0">
+        <label for="desconto">Desconto (%)</label>
+        <input type="number" id="desconto" value="0" min="0" max="100">
     </div>
+    
     <div class="form-group">
-        <label>Tipo de Cliente:</label>
+        <label for="vip">Tipo de Cliente</label>
         <select id="vip">
             <option value="false">Normal</option>
             <option value="true">VIP</option>
         </select>
     </div>
-    <button onclick="calcular()">Calcular Cashback</button>
+    
+    <button onclick="calcular()">Calcular Benefício</button>
 
     <div id="resultado" class="resultado" style="display:none;"></div>
 
-    <h3>Seu Histórico (Deste IP)</h3>
-    <table id="tabela-historico">
-        <thead>
-            <tr>
-                <th>Tipo</th>
-                <th>Valor Pago</th>
-                <th>Cashback</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h3>Histórico de Consultas <span style="font-weight: normal; font-size: 12px; color: var(--text-muted);">(Seu IP)</span></h3>
+    <div class="table-container">
+        <table id="tabela-historico">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Valor Pago</th>
+                    <th>Cashback</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 
 <script>
@@ -61,33 +243,47 @@
         const desconto = document.getElementById('desconto').value;
         const vip = document.getElementById('vip').value;
 
-        const res = await fetch(`${API_URL}/cashback?valor=${valor}&desconto=${desconto}&vip=${vip}`);
-        const data = await res.json();
+        try {
+            const res = await fetch(`${API_URL}/cashback?valor=${valor}&desconto=${desconto}&vip=${vip}`);
+            const data = await res.json();
 
-        const divRes = document.getElementById('resultado');
-        divRes.style.display = "block";
-        divRes.innerHTML = `<strong>Cashback Gerado:</strong> R$ ${data.cashback}`;
-        
-        carregarHistorico();
+            const divRes = document.getElementById('resultado');
+            divRes.style.display = "block";
+            divRes.innerHTML = `Benefício Calculado! <strong>R$ ${data.cashback.toFixed(2)}</strong>`;
+            
+            carregarHistorico();
+        } catch (error) {
+            console.error("Erro ao calcular:", error);
+        }
     }
 
     async function carregarHistorico() {
-        const res = await fetch(`${API_URL}/historico`);
-        const data = await res.json();
-        const tbody = document.querySelector('#tabela-historico tbody');
-        tbody.innerHTML = "";
+        try {
+            const res = await fetch(`${API_URL}/historico`);
+            const data = await res.json();
+            const tbody = document.querySelector('#tabela-historico tbody');
+            tbody.innerHTML = "";
 
-        data.historico.forEach(item => {
-            const row = `<tr>
-                <td>${item.tp_cliente}</td>
-                <td>R$ ${parseFloat(item.valor).toFixed(2)}</td>
-                <td>R$ ${parseFloat(item.cashback).toFixed(2)}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
+            if (!data.historico || data.historico.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Nenhuma consulta registrada.</td></tr>`;
+                return;
+            }
+
+            data.historico.forEach(item => {
+                const classeBadge = item.tp_cliente === "VIP" ? "badge-vip" : "badge-normal";
+                const row = `<tr>
+                    <td><span class="badge ${classeBadge}">${item.tp_cliente}</span></td>
+                    <td>R$ ${parseFloat(item.valor).toFixed(2)}</td>
+                    <td style="font-weight: 600; color: #16a34a;">R$ ${parseFloat(item.cashback).toFixed(2)}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error("Erro ao carregar histórico:", error);
+        }
     }
 
-    // Carrega o histórico ao abrir a página
+    
     carregarHistorico();
 </script>
 </body>
