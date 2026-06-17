@@ -58,14 +58,14 @@ def calcular_cashback(valor_produto, percentual_desconto, vip):
     
     if vip:
         bonus_vip = cashback_base * 0.10
-        cashback_acumulado = cashback_base + bonus_vip
+        cashback_total = cashback_base + bonus_vip
     else:
-        cashback_acumulado = cashback_base        
+        cashback_total = cashback_base        
         
-    if valor_final_compra > 500:
-        cashback_final = cashback_acumulado * 2
+    if valor_produto > 500:
+        cashback_final = cashback_total * 2
     else:
-        cashback_final = cashback_acumulado
+        cashback_final = cashback_total
         
     return round(cashback_final, 2)
 
