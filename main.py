@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# Pegamos a URL de conexão direto da nuvem
+
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
@@ -27,7 +27,7 @@ def get_connection():
         print(f"Erro ao conectar ao banco: {err}")
         raise HTTPException(status_code=500, detail="Erro de conexão com o banco de dados")
 
-# FUNÇÃO CRUCIAL: Cria a tabela automaticamente se ela não existir na nuvem
+
 def init_db():
     conn = get_connection()
     cursor = conn.cursor()
@@ -49,7 +49,7 @@ def init_db():
         cursor.close()
         conn.close()
 
-# Inicializa o banco assim que o app liga
+
 init_db()
 
 def calcular_cashback(valor_produto, percentual_desconto, vip):
@@ -81,7 +81,7 @@ def get_cashback(request: Request, valor: float, desconto: float = 0, vip: bool 
     cursor = conn.cursor()
 
     try:
-        # No PostgreSQL usa-se %s para os parâmetros
+        
         query = """
         INSERT INTO consultas (ip, tp_cliente, valor, cashback)
         VALUES (%s, %s, %s, %s) 
@@ -110,7 +110,7 @@ def get_historico(request: Request):
     ip = request.client.host
     
     conn = get_connection()
-    # RealDictCursor faz o Postgres retornar os dados como dicionário/JSON (igual ao dictionary=True do MySQL)
+    
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     try:
